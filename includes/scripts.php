@@ -250,4 +250,17 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="assets/js/material-dashboard.min.js?v=3.2.0"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+  <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
   
+  <script>
+    $(document).ready(function(){
+      $('#inputCPF').mask('000.000.000-00');
+      $('#inputTelefone').mask('(00) 00000-0000');
+      $('#tel_aluno').mask('(00) 00000-0000');
+      $('#cpf_funcionario').mask('000.000.000-00');
+      $('#cep').mask('00000-000');
+    });
+    new DataTable('#example');
+  </script>
