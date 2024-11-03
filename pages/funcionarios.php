@@ -1,3 +1,4 @@
+
 <div class="container-fluid py-2">
     <div class="row">
         <div class="col-xl-12 col-sm-6 mb-xl-0 mb-4">
@@ -5,35 +6,31 @@
                 <div class="card-header p-2 ps-3">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <form class="row g-3" method="post" action="">
+                            <form id="myForm" class="row g-3" method="post" action="includes/_scripts/scripts.php">
                                 <div class="col-md-6">
-                                    <label for="inputEmail4" class="form-label">Email</label>
+                                    <label for="inputNome" class="form-label">Nome</label>
                                     <div class="input-group input-group-outline">
-                                        <input type="email" class="form-control" name="email" id="inputEmail4" required>
+                                        <input type="text" class="form-control" name="nome" id="inputNome" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="inputPassword4" class="form-label">Password</label>
+                                    <label for="inputSobrenome" class="form-label">Sobrenome</label>
                                     <div class="input-group input-group-outline">
-                                        <input type="password" class="form-control" name="password" id="inputPassword4" required>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <label for="inputAddress" class="form-label">Endereço</label>
-                                    <div class="input-group input-group-outline">
-                                        <input type="text" class="form-control" name="address" id="inputAddress" required>
+                                        <input type="text" class="form-control" name="sobrenome" id="inputSobrenome"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="inputCity" class="form-label">Cidade</label>
+                                    <label for="inputEmail" class="form-label">Email</label>
                                     <div class="input-group input-group-outline">
-                                        <input type="text" class="form-control" name="city" id="inputCity" required>
+                                        <input type="email" class="form-control" name="email" id="inputEmail" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="inputState" class="form-label">Estado</label>
+                                    <label for="inputPassword" class="form-label">Senha</label>
                                     <div class="input-group input-group-outline">
-                                        <input type="text" class="form-control" name="state" id="inputState" required>
+                                        <input type="password" class="form-control" name="password" id="inputPassword"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -45,16 +42,30 @@
                                 <div class="col-md-6">
                                     <label for="inputTelefone" class="form-label">Telefone</label>
                                     <div class="input-group input-group-outline">
-                                        <input type="text" class="form-control" name="phone" id="inputTelefone" required>
+                                        <input type="text" class="form-control" name="phone" id="inputTelefone"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="inputSelect" class="form-label">Profissão</label>
+                                    <label for="professionSelect" class="form-label">Profissão</label>
                                     <div class="input-group input-group-outline">
-                                        <select id="inputSelect" class="form-select" name="profession" onchange="toggleOABField()">
-                                            <option selected>Profissão</option>
-                                            <option>Atendente</option>
-                                            <option>Advogado</option>
+                                        <select id="professionSelect" class="form-select" name="profession"
+                                            onchange="toggleOABField()">
+
+                                            <?php
+                                            $url = 'http://localhost:30514/perfis/findAll';
+                                            $response = file_get_contents($url);
+                                            if ($response !== FALSE) {
+                                                $data = json_decode($response, true);
+                                                if (is_array($data)) {
+                                                    foreach ($data as $profession) {
+                                                        echo '<option value="' . htmlspecialchars($profession['id']) . '">' . htmlspecialchars($profession['nome']) . '</option>';
+                                                    }
+                                                }
+                                            } else {
+                                                echo '<option disabled>Erro ao carregar profissões</option>';
+                                            }
+                                            ?>
                                         </select>
                                     </div>
                                 </div>
@@ -73,22 +84,96 @@
                 </div>
             </div>
         </div>
+
+    </div>
+</div>
+<?php
+// Faz a requisição à API para obter os dados dos funcionários
+$url = 'http://localhost:30514/funcionarios/findAll';
+$response = file_get_contents($url);
+
+$funcionarios = [];
+if ($response !== FALSE) {
+    $funcionarios = json_decode($response, true);
+}
+?>
+<div class="container-fluid py-2">
+    <div class="row">
+        <div class="col-xl-12 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-header p-2 ps-3">
+                    <h5>Funcionários Cadastrados</h5>
+                    <table id="example" class="display">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Profissão</th>
+                                <th>Telefone</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (is_array($funcionarios)): ?>
+                                <?php foreach ($funcionarios as $funcionario): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($funcionario['nome']); ?></td>
+                                        <td><?php echo htmlspecialchars($funcionario['perfil']['nome']); ?></td>
+                                        <td><?php echo htmlspecialchars($funcionario['telefone']); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="3">Nenhum funcionário encontrado.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    document.getElementById('myForm').onsubmit = async function (event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+
+        const response = await fetch(this.action, {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        Swal.fire({
+            icon: result.status === 'success' ? 'success' : 'error',
+            title: result.status === 'success' ? 'Sucesso!' : 'Erro!',
+            text: result.message
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = './dashboard.php?r=funcionarios';
+            }
+        });
+    }
+</script>
+<script>
+
     function toggleOABField() {
-        const select = document.getElementById('inputSelect');
+        const select = document.getElementById('professionSelect');
         const oabField = document.getElementById('oabField');
         const oabInput = document.getElementById('inputOAB');
-        
-        if (select.value === 'Advogado') {
-            oabField.style.display = 'block'; 
+
+        if (select.value === '1') {
+            oabField.style.display = 'block';
             oabInput.setAttribute('required', 'required');
         } else {
-            oabField.style.display = 'none'; 
-            oabInput.removeAttribute('required'); 
-            oabInput.value = ''; 
+            oabField.style.display = 'none';
+            oabInput.removeAttribute('required');
+            oabInput.value = '';
         }
     }
 </script>
+
+<link rel="stylesheet" href="assets/css/custom-styles.css">

@@ -1,6 +1,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="assets/css/style_custom.css" type="text/css" rel="stylesheet">
   <link rel="apple-touch-icon" sizes="76x76" href="https://cdn-icons-png.flaticon.com/512/1/1430.png">
   <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/1/1430.png">
   <title>
@@ -22,8 +23,11 @@
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
   
     
-    
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+  
+  <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
   <script src="js/calendario.js"></script>
   <script src="js/index.global.min.js"></script>
   <script src="js/core/locales-all.global.min.js"></script>
+  <script>new DataTable('#example');</script>
 </head>
